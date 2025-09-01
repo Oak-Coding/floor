@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tahura Architects | Professional Architectural Design</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         /* Global Styles */
         :root {
@@ -27,12 +29,14 @@
             line-height: 1.6;
             color: #333;
             background-color: #fff;
+            overflow-x: hidden;
         }
         
         .container {
             width: 90%;
             max-width: 1200px;
             margin: 0 auto;
+            padding: 0 15px;
         }
         
         .btn {
@@ -51,6 +55,18 @@
         .btn:hover {
             background: #a8320e;
             transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(197, 61, 19, 0.3);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+        }
+        
+        .btn-outline:hover {
+            background: var(--accent-color);
+            color: white;
         }
         
         .section-title {
@@ -72,12 +88,13 @@
         
         /* Header Styles */
         header {
-            background-color: white;
+            background-color: rgba(255, 255, 255, 0.95);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
+            transition: var(--transition);
         }
         
         .header-container {
@@ -92,10 +109,17 @@
             font-weight: 700;
             color: var(--primary-color);
             text-decoration: none;
+            display: flex;
+            align-items: center;
         }
         
         .logo span {
             color: var(--accent-color);
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 2rem;
         }
         
         nav ul {
@@ -112,21 +136,45 @@
             color: var(--dark-color);
             font-weight: 500;
             transition: var(--transition);
+            position: relative;
+        }
+        
+        nav ul li a:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: var(--transition);
         }
         
         nav ul li a:hover {
             color: var(--accent-color);
         }
         
+        nav ul li a:hover:after {
+            width: 100%;
+        }
+        
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
         /* Hero Section */
         .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80') no-repeat center center/cover;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80') no-repeat center center/cover;
             height: 100vh;
             display: flex;
             align-items: center;
             text-align: center;
             color: white;
             padding-top: 80px;
+            position: relative;
         }
         
         .hero-content {
@@ -138,11 +186,24 @@
         .hero h1 {
             font-size: 3.5rem;
             margin-bottom: 20px;
+            line-height: 1.2;
         }
         
         .hero p {
             font-size: 1.2rem;
             margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+            cursor: pointer;
         }
         
         /* Services Section */
@@ -163,6 +224,18 @@
             border-radius: 8px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             transition: var(--transition);
+            text-align: center;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        
+        .service-card.animate {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         .service-card:hover {
@@ -174,6 +247,13 @@
             font-size: 2.5rem;
             color: var(--accent-color);
             margin-bottom: 20px;
+            background: rgba(197, 61, 19, 0.1);
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
         }
         
         .service-card h3 {
@@ -199,6 +279,14 @@
             height: 300px;
             overflow: hidden;
             border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        
+        .project-card.animate {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         .project-card img {
@@ -246,6 +334,13 @@
             text-align: center;
             position: relative;
             margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        
+        .process-step.animate {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         .process-step:not(:last-child):after {
@@ -270,6 +365,12 @@
             font-size: 1.8rem;
             font-weight: bold;
             margin: 0 auto 20px;
+            transition: var(--transition);
+        }
+        
+        .process-step:hover .step-number {
+            background: var(--accent-color);
+            transform: scale(1.1);
         }
         
         /* About Section */
@@ -288,12 +389,47 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+        
+        .about-image.animate {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .about-image:before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: -20px;
+            bottom: -20px;
+            border: 2px solid var(--accent-color);
+            border-radius: 8px;
+            z-index: -1;
         }
         
         .about-image img {
             width: 100%;
             height: auto;
             display: block;
+            transition: var(--transition);
+        }
+        
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+        
+        .about-text {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+        
+        .about-text.animate {
+            opacity: 1;
+            transform: translateX(0);
         }
         
         .about-text h2 {
@@ -323,6 +459,20 @@
             padding: 30px;
             border-radius: 8px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            position: relative;
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        
+        .testimonial-card.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
         
         .testimonial-text {
@@ -352,6 +502,7 @@
             border-radius: 50%;
             overflow: hidden;
             margin-right: 15px;
+            border: 2px solid var(--accent-color);
         }
         
         .author-image img {
@@ -370,6 +521,16 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 50px;
+        }
+        
+        .contact-info {
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+        
+        .contact-info.animate {
+            opacity: 1;
+            transform: translateX(0);
         }
         
         .contact-info h3 {
@@ -391,19 +552,43 @@
         .contact-details i {
             margin-right: 10px;
             color: var(--accent-color);
+            width: 20px;
+        }
+        
+        .contact-form {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+        
+        .contact-form.animate {
+            opacity: 1;
+            transform: translateX(0);
         }
         
         .contact-form input,
-        .contact-form textarea {
+        .contact-form textarea,
+        .contact-form select {
             width: 100%;
-            padding: 12px;
+            padding: 12px 15px;
             margin-bottom: 20px;
             border: 1px solid #ddd;
             border-radius: 4px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .contact-form input:focus,
+        .contact-form textarea:focus,
+        .contact-form select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(197, 61, 19, 0.2);
         }
         
         .contact-form textarea {
             height: 150px;
+            resize: vertical;
         }
         
         /* Footer */
@@ -437,6 +622,7 @@
         
         .footer-section p {
             margin-bottom: 15px;
+            opacity: 0.8;
         }
         
         .footer-section ul {
@@ -484,9 +670,149 @@
             text-align: center;
             padding-top: 20px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.7;
+        }
+        
+        /* Popup Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #777;
+            transition: var(--transition);
+        }
+        
+        .close-modal:hover {
+            color: var(--accent-color);
+            transform: rotate(90deg);
+        }
+        
+        .service-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .service-option {
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .service-option:hover {
+            border-color: var(--accent-color);
+            background: rgba(197, 61, 19, 0.05);
+            transform: translateY(-3px);
+        }
+        
+        .service-option.selected {
+            border-color: var(--accent-color);
+            background: rgba(197, 61, 19, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .service-option i {
+            font-size: 2rem;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            transition: var(--transition);
+        }
+        
+        .service-option:hover i {
+            transform: scale(1.1);
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+            40% { transform: translateY(-20px) translateX(-50%); }
+            60% { transform: translateY(-10px) translateX(-50%); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        /* Particle Animation */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
         }
         
         /* Responsive Design */
+        @media (max-width: 1200px) {
+            .process-step:not(:last-child):after {
+                right: -10%;
+                width: 20%;
+            }
+        }
+        
         @media (max-width: 992px) {
             .about-content,
             .contact-container {
@@ -494,7 +820,7 @@
             }
             
             .hero h1 {
-                font-size: 2.5rem;
+                font-size: 2.8rem;
             }
             
             .process-step:not(:last-child):after {
@@ -504,19 +830,53 @@
             .process-step {
                 flex: 0 0 calc(50% - 30px);
             }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
         }
         
         @media (max-width: 768px) {
             .header-container {
                 flex-direction: column;
+                text-align: center;
+            }
+            
+            nav {
+                margin-top: 20px;
+                width: 100%;
             }
             
             nav ul {
-                margin-top: 20px;
+                flex-direction: column;
+                align-items: center;
             }
             
             nav ul li {
-                margin: 0 10px;
+                margin: 10px 0;
+            }
+            
+            .menu-toggle {
+                display: block;
+                position: absolute;
+                top: 25px;
+                right: 20px;
+            }
+            
+            nav {
+                display: none;
+            }
+            
+            nav.active {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
             }
             
             .section-title {
@@ -526,26 +886,96 @@
             .process-step {
                 flex: 0 0 100%;
             }
+            
+            .contact-details p {
+                font-size: 0.9rem;
+            }
+            
+            .modal-content {
+                padding: 30px 20px;
+            }
         }
         
         @media (max-width: 576px) {
             .hero h1 {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
             
-            nav ul {
-                flex-wrap: wrap;
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .service-card {
+                padding: 20px;
+            }
+            
+            .project-card {
+                height: 250px;
+            }
+            
+            .testimonial-card {
+                padding: 20px;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .social-links {
                 justify-content: center;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .section-title:after {
+                width: 60px;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Particle Animation -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Popup Modal -->
+    <div class="modal-overlay" id="serviceModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>How can we help you?</h2>
+            <p>Please select the service you're interested in:</p>
+            <div class="service-options">
+                <div class="service-option" data-service="Redraw Floor Plan">
+                    <i class="fas fa-sync-alt"></i>
+                    <h3>Redraw Floor Plan</h3>
+                    <p>Transform existing plans into updated, professional drawings</p>
+                </div>
+                <div class="service-option" data-service="Draw Floor Plan">
+                    <i class="fas fa-drafting-compass"></i>
+                    <h3>Draw Floor Plan</h3>
+                    <p>Create new floor plans from scratch based on your requirements</p>
+                </div>
+                <div class="service-option" data-service="Not Sure">
+                    <i class="fas fa-question-circle"></i>
+                    <h3>Not Sure</h3>
+                    <p>I need consultation to determine what I need</p>
+                </div>
+            </div>
+            <button class="btn" id="selectService">Continue</button>
+        </div>
+    </div>
+
     <!-- Header -->
     <header>
         <div class="container header-container">
-            <a href="#" class="logo">Tahura <span>Architects</span></a>
-            <nav>
+            <a href="#" class="logo"><i class="fas fa-drafting-compass"></i>Tahura <span>Architects</span></a>
+            <div class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <nav id="mainNav">
                 <ul>
                     <li><a href="#">Home</a></li>
                     <li><a href="#services">Services</a></li>
@@ -563,7 +993,13 @@
         <div class="hero-content">
             <h1>Transforming Visions into Architectural Masterpieces</h1>
             <p>Professional architectural services with a focus on innovative design, functionality, and sustainability</p>
-            <a href="#contact" class="btn">Get in Touch</a>
+            <div>
+                <a href="#contact" class="btn">Get in Touch</a>
+                <a href="#services" class="btn btn-outline" style="margin-left: 15px;">Our Services</a>
+            </div>
+        </div>
+        <div class="scroll-down" id="scrollDown">
+            <i class="fas fa-chevron-down"></i>
         </div>
     </section>
 
@@ -746,10 +1182,10 @@
                     </div>
                 </div>
                 <div class="contact-form">
-                    <form>
+                    <form id="contactForm">
                         <input type="text" placeholder="Your Name" required>
                         <input type="email" placeholder="Your Email" required>
-                        <input type="text" placeholder="Subject">
+                        <input type="text" id="serviceType" placeholder="Service Needed" readonly>
                         <textarea placeholder="Your Message" required></textarea>
                         <button type="submit" class="btn">Send Message</button>
                     </form>
@@ -795,34 +1231,172 @@
     </footer>
 
     <script>
-        // Simple script for smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
+        $(document).ready(function() {
+            // Create particle animation
+            function createParticles() {
+                const particles = $('#particles');
+                const particleCount = 30;
                 
-                const targetId = this.getAttribute('href');
-                if(targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if(targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
+                for (let i = 0; i < particleCount; i++) {
+                    const size = Math.random() * 5 + 2;
+                    const particle = $('<div class="particle"></div>').css({
+                        width: size + 'px',
+                        height: size + 'px',
+                        top: Math.random() * 100 + '%',
+                        left: Math.random() * 100 + '%',
+                        opacity: Math.random() * 0.5 + 0.1,
+                        animation: `float ${Math.random() * 10 + 5}s infinite ease-in-out`
                     });
+                    
+                    particles.append(particle);
+                }
+            }
+            
+            createParticles();
+            
+            // Show modal on page load with delay
+            setTimeout(function() {
+                $('#serviceModal').addClass('active');
+                $('body').css('overflow', 'hidden');
+            }, 2000);
+            
+            // Close modal
+            $('.close-modal').click(function() {
+                $('#serviceModal').removeClass('active');
+                $('body').css('overflow', 'auto');
+            });
+            
+            // Close modal when clicking outside
+            $(document).mouseup(function(e) {
+                const modal = $('#serviceModal');
+                if (!modal.is(e.target) && modal.has(e.target).length === 0) {
+                    modal.removeClass('active');
+                    $('body').css('overflow', 'auto');
                 }
             });
-        });
-
-        // Header background change on scroll
-        window.addEventListener('scroll', function() {
-            const header = document.querySelector('header');
-            if (window.scrollY > 100) {
-                header.style.background = 'rgba(255, 255, 255, 0.95)';
-                header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
-            } else {
-                header.style.background = 'white';
-                header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+            
+            // Service selection
+            $('.service-option').click(function() {
+                $('.service-option').removeClass('selected');
+                $(this).addClass('selected');
+            });
+            
+            // Continue button
+            $('#selectService').click(function() {
+                var selectedService = $('.service-option.selected').data('service');
+                if (selectedService) {
+                    $('#serviceType').val(selectedService);
+                    $('#serviceModal').removeClass('active');
+                    $('body').css('overflow', 'auto');
+                    
+                    // Scroll to contact form with animation
+                    $('html, body').animate({
+                        scrollTop: $('#contact').offset().top - 80
+                    }, 1000, 'easeInOutQuart');
+                    
+                    // Pulse animation on the service type field
+                    $('#serviceType').css('animation', 'pulse 1s');
+                    setTimeout(function() {
+                        $('#serviceType').css('animation', '');
+                    }, 1000);
+                } else {
+                    // Shake animation if no option selected
+                    $('.service-options').css('animation', 'shake 0.5s');
+                    setTimeout(function() {
+                        $('.service-options').css('animation', '');
+                    }, 500);
+                }
+            });
+            
+            // Mobile menu toggle
+            $('#menuToggle').click(function() {
+                $('#mainNav').slideToggle(300);
+                $(this).toggleClass('active');
+            });
+            
+            // Smooth scrolling for navigation links
+            $('a[href*="#"]').not('[href="#"]').not('[href="#0"]').click(function(event) {
+                if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+                    var target = $(this.hash);
+                    target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                    if (target.length) {
+                        event.preventDefault();
+                        $('html, body').animate({
+                            scrollTop: target.offset().top - 80
+                        }, 1000, 'easeInOutQuart');
+                    }
+                }
+            });
+            
+            // Scroll down arrow
+            $('#scrollDown').click(function() {
+                $('html, body').animate({
+                    scrollTop: $('#services').offset().top - 80
+                }, 1000, 'easeInOutQuart');
+            });
+            
+            // Header scroll effect
+            $(window).scroll(function() {
+                if ($(this).scrollTop() > 100) {
+                    $('header').css('background', 'rgba(255, 255, 255, 0.95)');
+                } else {
+                    $('header').css('background', 'white');
+                }
+            });
+            
+            // Form submission
+            $('#contactForm').submit(function(e) {
+                e.preventDefault();
+                
+                // Add success animation
+                const btn = $(this).find('button');
+                btn.html('<i class="fas fa-check"></i> Message Sent!');
+                btn.css('background', '#2ecc71');
+                
+                setTimeout(function() {
+                    btn.html('Send Message');
+                    btn.css('background', '');
+                    $('#contactForm')[0].reset();
+                }, 2000);
+            });
+            
+            // Animation on scroll
+            function animateOnScroll() {
+                $('.service-card, .project-card, .process-step, .testimonial-card, .about-image, .about-text, .contact-info, .contact-form').each(function() {
+                    var position = $(this).offset().top;
+                    var scroll = $(window).scrollTop();
+                    var windowHeight = $(window).height();
+                    
+                    if (scroll > position - windowHeight + 100) {
+                        $(this).addClass('animate');
+                    }
+                });
             }
+            
+            // Initial call
+            animateOnScroll();
+            
+            // On scroll call
+            $(window).scroll(function() {
+                animateOnScroll();
+            });
+            
+            // Add easing function
+            jQuery.easing.easeInOutQuart = function (x, t, b, c, d) {
+                if ((t /= d / 2) < 1) return c / 2 * t * t * t * t + b;
+                return -c / 2 * ((t -= 2) * t * t * t - 2) + b;
+            };
+            
+            // Add shake animation
+            const shakeKeyframes = `
+                @keyframes shake {
+                    0%, 100% { transform: translateX(0); }
+                    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                    20%, 40%, 60%, 80% { transform: translateX(5px); }
+                }
+            `;
+            
+            $('head').append(`<style>${shakeKeyframes}</style>`);
         });
     </script>
 </body>
